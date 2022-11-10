@@ -1,0 +1,5 @@
+CALL_FUNCTION 
+    PackageAddress("...") 
+    "INattyOracle" 
+    "create_nft" 
+    "DATA";
