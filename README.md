@@ -24,13 +24,13 @@ DAO funds small-scale environmental benefits such as: wildland trash pickups, be
 
 The first token backed by relationships to nature. It's used to buy NFTs from the NattyDAO. It's also used to vote on proposals to fund environmental projects.
 
-### iNATTY NFTs
+### iNATTY NFTs (THIS PART USED FOR SUBMISSION TO SCRYPTO CHALLENGE)
 
-NFTs minted by the NattyDAO that represent a member outside experiencing nature. These NFTs are minted using data from the **iNatty Oracle**. Whenever a registered member experiences nature, an NFT is minted. 
+NFTs minted by the NattyDAO that represent a member outside experiencing nature. These NFTs are minted using data from the **iNatty Oracle**. Whenever a registered member experiences nature, an NFT is minted. This nature experience is provable because of integration with the iNaturalist API.
 
 They are then offered for sale in an NFT marketplace. They can only be purchased with INATTY, and 50% of the funds go to the NattyDAO treasury, and 50% go to the member.
 
-### iNATTY Oracle
+### iNATTY Oracle 
 
 Relays information about the member's associated iNaturalist accounts to the NattyDAO components. One part watches for new registrations of [iNaturalist.org](https://inaturalist.org) accounts and keeps track of the member's activity in a Scrypto Component. Another part watches for new observations on iNaturalist and mints NFTs for the member (metadata includes the natural experience, including image, species identified, location, and date).
 
@@ -49,3 +49,7 @@ This is used to incentivize members to participate in the NattyDAO. It is funded
 - Their dispute is voted on, if found out true then they get their bonded XRD back + some reward.
   
 - If their dispute isn't corroborated by community, they lose their bond.
+
+### References
+
+- [Open Forest Protocol Whiteboard Series (YouTube)](https://www.youtube.com/watch?v=ZjFT2KoUgks&list=PLWJdg32OtDLUbxcE_Qr0GTHQ0L07mikej)

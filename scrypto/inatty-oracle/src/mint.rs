@@ -86,5 +86,11 @@ blueprint! {
                 self.experiences.push(id);
             };
         }
+
+        // Method to send NFTs to the marketplace
+        // They become for sale, and the proceeds are split between the minter and the DAO
+        pub fn list_on_marketplace(&mut self, nft: ResourceAddress) {
+            
+        }
     }
 }

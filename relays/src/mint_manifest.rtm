@@ -1,5 +1,8 @@
+# This RTM is called when a new nature experience is added to the database
+
 CALL_FUNCTION 
     PackageAddress("...") 
     "INattyOracle" 
     "create_nft" 
-    "DATA";
+    "DATA...";
+

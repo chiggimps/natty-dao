@@ -1,6 +1,6 @@
-# Connect to the iNaturalist API and get the data for a given user
-# There's a lot we can do around metadata (e.g. extra rarity for reviewed observations...)
-
+# Connect to the iNaturalist API and get the data for a given user.
+# There's a lot more we can do around metadata.
+# (e.g. extra rarity for reviewed observations...)
 import requests
 import sys
 import pandas as pd
@@ -10,9 +10,6 @@ import json
 from dotenv import load_dotenv
 load_dotenv()
 
-# Get the user's API key from the environment
-# api_key = os.environ['INAT_API_KEY']
-
 # path needed for cronjob access
 script_path: str = os.path.dirname(os.path.realpath(__file__))
 
@@ -20,9 +17,8 @@ script_path: str = os.path.dirname(os.path.realpath(__file__))
 # a class for this iNatty module instatiated per user
 class iNatty(object):
 
-    def __init__(self, user_name, api_key=None):
+    def __init__(self, user_name):
         self.user_name = user_name
-        self.api_key = api_key
         self.observedNew = []
         self.observedTotal = {}
 
@@ -51,6 +47,7 @@ class iNatty(object):
         
         if newOnes:
             self.save_obs_to_db()
+            # if there's a new one, we call the Radix Transaction Manifest to mint the NFT
 
         return None
 
@@ -68,8 +65,7 @@ class iNatty(object):
                 "imageUrlLarge": obs["photos"][0]["url"].replace("square", "original")
             }
         except Exception as e:
-            print('Error parsing observation: ', e)
-            # print('error parsing observation: ', json.dumps(obs, indent=4, sort_keys=True))
+            print('error parsing observation: ', e, json.dumps(obs, indent=4, sort_keys=True))
             pass
         return obs_parsed
 
