@@ -1,6 +1,6 @@
 use scrypto::prelude::*;
 
-// An NFT that will be minted each time there's an observation.
+// An NFT that will be minted each time there's a captured nature experience.
 // It will then be listed for sale in a marketplace.
 // 50% of the proceeds will be sent to the minter, and 50% to the DAO.
 // These observation NFTs are purchased only with INATTY token. 
@@ -17,7 +17,9 @@ pub struct ObservationData {
     pub date: String,
     pub location: String,
     pub user: String,
-    pub image_url: String
+    pub image_url: String,
+    pub species: String,
+    pub description: String
 }
 
 blueprint! {
@@ -25,72 +27,107 @@ blueprint! {
     struct INattyOracle {
         // Define what resources and data will be managed by INattyOracle component
         mint_badge: Vault,
-        admin_badge: Vault,
+        nft_resource_address: ResourceAddress,
         // List of iNaturalist observation ids already minted
-        experiences: Vec<String>,
-        // Map of users to iNaturalist observations (NFT ResourceAddress? or NonFungibleId? or ObservationData?)
-        // user_observations: Map<String, Vec<NonFungibleId>>,
+        past_experiences: Vec<String>,
     }
 
     impl INattyOracle {
         
         // This is a function, and can be called directly on the blueprint once deployed
-        pub fn instantiate_oracle() -> ComponentAddress {
+        // This returns a component address (whoever instantiates will receive an admin badge.)
+        pub fn instantiate_oracle() -> (ComponentAddress, Bucket) {
 
-            let mint_badge_bucket = ResourceBuilder::new_fungible()
+            let mint_badge = ResourceBuilder::new_fungible()
                 .divisibility(DIVISIBILITY_NONE)
                 .metadata("name", "Nature Experience Mint Badge")
                 .initial_supply(1);
 
-            let admin_badge_bucket = ResourceBuilder::new_fungible()
-                .divisibility(DIVISIBILITY_NONE)
-                .metadata("name", "NattyDAO Admin Badge")
-                .initial_supply(1);
+            let nft_resource_address = ResourceBuilder::new_non_fungible()
+                .metadata("name", "INatty Nature Experience")
+                .mintable(rule!(require(mint_badge.resource_address())), LOCKED)
+                .burnable(rule!(require(mint_badge.resource_address())), LOCKED)
+                .updateable_non_fungible_data(rule!(require(mint_badge.resource_address())), LOCKED)
+                .no_initial_supply();
 
+            // Access rule (for mint badge to call create_nft)
+            let access_rule = AccessRules::new()
+                .default(rule!(require(mint_badge.resource_address()))); // by default, every method requires mint badge
+
+            // empty
+            let mut vec = Vec::new();
+            
             // Instantiate a new INattyOracle component
-            Self {
-                mint_badge: Vault::with_bucket(mint_badge_bucket),
-                admin_badge: Vault::with_bucket(admin_badge_bucket),
-                // observations: HashMap::new(),
+            let mut mint_component = Self {
+                mint_badge: Vault::with_bucket(mint_badge), // stays within component (as opposed to admin_badge which is used to access component)
+                nft_resource_address,
+                past_experiences: vec,
             }
-            .instantiate()
-            .globalize()
+            .instantiate();
+            mint_component.add_access_check(access_rule);
+
+            (mint_component.globalize(), mint_badge)
         }
 
-        // This will be called from the mint_manifest.rtm
-        pub fn create_nft(&mut self, id: String, date: String, location: String, user: Address, image_url: String) -> ResourceAddress {
-            
-            // Check whether this user has already minted this observation id
-            // If not, mint a new NFT and return the address
-            if self.experiences.contains(&id) {
-                    return 0;
-            } else {
-                // Create a new NFT with the given data
-                let nft_md = ObservationData {
-                    id: id,
-                    date: date,
-                    location: location,
-                    user: user,
-                    image_url: image_url
-                };
-                
-                let nft_resource = ResourceBuilder::new_non_fungible()
-                    .metadata("name", "INatty Nature Experience")
-                    .metadata("description", nft_md.user + "obserted on " + nft_md.date.to_string() + " at " + nft_md.location)
-                    .metadata("image_url", nft_md.image_url)
-                    .mintable(rule!(require(mint_badge.resource_address())), LOCKED)
-                    .burnable(rule!(require(mint_badge.resource_address())), LOCKED)
-                    .updateable_non_fungible_data(rule!(require(admin_badge.resource_address())), LOCKED)
+        // Notes from Jake:
+        // Need to have a Bucket as an output to create_nft
+        // Could get a resource address of the bucket (which will stay the same)
+        // Every NFT for a component will have a unique Non-fungible ID, but have 1 resourceaddress (collection id)
+        // Once you instantiate component, you receive an admin badge.
+        // Implement an access rule 
 
-                // Add to past experiences
-                self.experiences.push(id);
-            };
+        // This will be called from the mint_manifest.rtm
+        pub fn create_nft(&mut self, id: String, date: String, location: String, user: String, image_url: String, species: String) -> ResourceAddress {
+            
+            // Check whether this user has already minted this id
+            // If not, mint a new NFT
+            if self.past_experiences.contains(&id) {
+                return ResourceAddress::from_str("0x0000000000000000000000000000000000000000").unwrap();
+            } else {
+                self.past_experiences.push(id.clone());
+                let d = [species, " observed on ".to_string(), date].join("");
+                let nft_data = ObservationData {
+                    id: id.clone(),
+                    date: date.clone(),
+                    location: location.clone(),
+                    user: user.clone(),
+                    image_url: image_url.clone(),
+                    species: species.clone(),
+                    description: d,
+                };
+
+                // create a copy of id
+                let id_copy = id.clone();
+                // convert id (which is a number) to u64
+                let id_u64 = id_copy.parse::<u64>().unwrap();
+
+                // Goes into mint badge vault, and authorizing (creating a proof of that badge),
+                // Putting that into the local component's authorization zone. Which allows resource manager to do the updates.
+                let nft = self.mint_badge.authorize(|| {
+                    let resource_manager = borrow_resource_manager!(self.nft_resource_address);
+                    resource_manager.mint_non_fungible(
+                        // The NFT id
+                        &NonFungibleId::from_u64(id_u64),
+                        // The NFT data
+                        nft_data,
+                    )
+                });
+
+                nft.resource_address()
+            }
         }
 
         // Method to send NFTs to the marketplace
         // They become for sale, and the proceeds are split between the minter and the DAO
         pub fn list_on_marketplace(&mut self, nft: ResourceAddress) {
             
+        }
+
+        // Update method, where the relay has access to account,
+        // pulls a proof of the badge, and then they have update authority
+        // this could be if the species changed due to curation
+        pub fn update_nft() {
+
         }
     }
 }
