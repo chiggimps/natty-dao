@@ -1,3 +1,13 @@
+THIS IS TOTALLY UNFINISHED, but wanted to submit it just for the sake of 'why the hell not?'.
+
+Basically there's a relay script that checks an external API for changes, loads a file with those changes, and then mints them as NFTs using an RTM. This relay is TBD (to be decentralized).
+
+That RTM is calling into [scrypto/inatty-oracle/src/mint.rs](scrypto/inatty-oracle/src/mint.rs) in the `create_nft` method.
+
+This is not an NFT for finance use cases, but an NFT for "Regenerative Finance" use cases. 
+
+------------------
+
 ## <This is all conceptual until Babylon. Please join now and help build this project with me!>
 
 See [shardeez.xyz/refi](https://shardeez.xyz/refi) for resources on Regenerative Finance (ReFi). Let's learn about ReFi and build together!
