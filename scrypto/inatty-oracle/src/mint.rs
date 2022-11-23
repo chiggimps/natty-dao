@@ -27,9 +27,7 @@ blueprint! {
     struct INattyOracle {
         // Define what resources and data will be managed by INattyOracle component
         mint_badge: Vault,
-        nft_resource_address: ResourceAddress,
-        // List of iNaturalist observation ids already minted
-        past_experiences: Vec<String>,
+        nft_resource_address: ResourceAddress
     }
 
     impl INattyOracle {
@@ -54,14 +52,10 @@ blueprint! {
             let access_rule = AccessRules::new()
                 .default(rule!(require(mint_badge.resource_address()))); // by default, every method requires mint badge
 
-            // empty
-            let mut vec = Vec::new();
-            
             // Instantiate a new INattyOracle component
             let mut mint_component = Self {
-                mint_badge: Vault::with_bucket(mint_badge), // stays within component (as opposed to admin_badge which is used to access component)
-                nft_resource_address,
-                past_experiences: vec,
+                mint_badge: Vault::new(mint_badge.resource_address()), // stays within component (as opposed to admin_badge which is used to access component)
+                nft_resource_address
             }
             .instantiate();
             mint_component.add_access_check(access_rule);
@@ -79,55 +73,50 @@ blueprint! {
         // This will be called from the mint_manifest.rtm
         pub fn create_nft(&mut self, id: String, date: String, location: String, user: String, image_url: String, species: String) -> ResourceAddress {
             
-            // Check whether this user has already minted this id
-            // If not, mint a new NFT
-            if self.past_experiences.contains(&id) {
-                return ResourceAddress::from_str("0x0000000000000000000000000000000000000000").unwrap();
-            } else {
-                self.past_experiences.push(id.clone());
-                let d = [species, " observed on ".to_string(), date].join("");
-                let nft_data = ObservationData {
-                    id: id.clone(),
-                    date: date.clone(),
-                    location: location.clone(),
-                    user: user.clone(),
-                    image_url: image_url.clone(),
-                    species: species.clone(),
-                    description: d,
-                };
+            let d = format!("{} observed on {}", species, date);
+            let idcopy = format!("{}", id);
 
-                // create a copy of id
-                let id_copy = id.clone();
-                // convert id (which is a number) to u64
-                let id_u64 = id_copy.parse::<u64>().unwrap();
+            let nft_data = ObservationData {
+                id: idcopy,
+                date,
+                location,
+                user,
+                image_url,
+                species,
+                description: d,
+            };
 
-                // Goes into mint badge vault, and authorizing (creating a proof of that badge),
-                // Putting that into the local component's authorization zone. Which allows resource manager to do the updates.
-                let nft = self.mint_badge.authorize(|| {
-                    let resource_manager = borrow_resource_manager!(self.nft_resource_address);
-                    resource_manager.mint_non_fungible(
-                        // The NFT id
-                        &NonFungibleId::from_u64(id_u64),
-                        // The NFT data
-                        nft_data,
-                    )
-                });
+            // convert id (which is a number) to u64
+            let idcopy = format!("{}", id);
+            let id_u64 = idcopy.parse::<u64>().unwrap();
 
-                nft.resource_address()
-            }
+            // Goes into mint badge vault, and authorizing (creating a proof of that badge),
+            // Putting that into the local component's authorization zone. Which allows resource manager to do the updates.
+            let nft = self.mint_badge.authorize(|| {
+                let resource_manager = borrow_resource_manager!(self.nft_resource_address);
+                resource_manager.mint_non_fungible(
+                    // The NFT id
+                    &NonFungibleId::from_u64(id_u64),
+                    // The NFT data
+                    nft_data,
+                )
+            });
+
+            nft.resource_address()
+            
         }
 
         // Method to send NFTs to the marketplace
         // They become for sale, and the proceeds are split between the minter and the DAO
-        pub fn list_on_marketplace(&mut self, nft: ResourceAddress) {
+        // pub fn list_on_marketplace(&mut self, nft: ResourceAddress) {
             
-        }
+        // }
 
         // Update method, where the relay has access to account,
         // pulls a proof of the badge, and then they have update authority
         // this could be if the species changed due to curation
-        pub fn update_nft() {
+        // pub fn update_nft() {
 
-        }
+        // }
     }
 }
