@@ -1,13 +1,3 @@
-THIS IS TOTALLY UNFINISHED, but wanted to submit it just for the sake of 'why the hell not?'.
-
-Basically there's a relay script that checks an external API for changes, loads a file with those changes, and then mints them as NFTs using an RTM. This relay is TBD (to be decentralized).
-
-That RTM is calling into [scrypto/inatty-oracle/src/mint.rs](scrypto/inatty-oracle/src/mint.rs) in the `create_nft` method.
-
-This is not an NFT for finance use cases, but an NFT for "Regenerative Finance" use cases. 
-
-------------------
-
 ## <This is all conceptual until Babylon. Please join now and help build this project with me!>
 
 See [shardeez.xyz/refi](https://shardeez.xyz/refi) for resources on Regenerative Finance (ReFi). Let's learn about ReFi and build together!
@@ -18,7 +8,7 @@ See [shardeez.xyz/refi](https://shardeez.xyz/refi) for resources on Regenerative
 
 To support members of the Radix community to `touch grass` & `touch trash`.
 
-DAO funds small-scale environmental benefits such as: wildland trash pickups, beach cleanups, de-paving (removing concrete and replacing w/ native plants), gardening projects, pollinator homes, and more. 
+DAO funds small-scale environmental benefits such as: wildland trash pickups, beach cleanups, de-paving (removing concrete and replacing w/ native plants), gardening projects, pollinator homes, and more.
 
 ### Mechanism
 
@@ -34,7 +24,7 @@ DAO funds small-scale environmental benefits such as: wildland trash pickups, be
 
 The first token backed by relationships to nature. It's used to buy NFTs from the NattyDAO. It's also used to vote on proposals to fund environmental projects.
 
-### iNATTY NFTs (THIS PART USED FOR SUBMISSION TO SCRYPTO CHALLENGE)
+### iNATTY NFTs
 
 NFTs minted by the NattyDAO that represent a member outside experiencing nature. These NFTs are minted using data from the **iNatty Oracle**. Whenever a registered member experiences nature, an NFT is minted. This nature experience is provable because of integration with the iNaturalist API.
 
