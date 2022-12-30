@@ -22,7 +22,7 @@ button {
 input {
     padding: 1.33rem;
     border-radius: .33rem;
-    width: 66%;
+    width: 50%;
     margin-bottom: 1.33rem;
     display: block;
     border: none;
@@ -31,7 +31,7 @@ input {
 .container {
     background-color: #F4F5F9;
     color: #414141;
-    max-width: 100%;
+    max-width: 50%;
     padding: 1rem;
     overflow-x: scroll;
     border-radius: .33rem;
