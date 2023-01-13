@@ -7,7 +7,8 @@ import WalletSdk, {
   Expression,
   Decimal,
 } from '@radixdlt/wallet-sdk';
-// There are four classes exported in the Gateway-SDK These serve as a thin wrapper around the gateway API
+
+// There are 4 classes exported in the Gateway-SDK, these serve as a thin wrapper around the gateway API
 // API docs are available @ https://betanet-gateway.redoc.ly/
 import { TransactionApi, StateApi, StatusApi, StreamApi } from "@radixdlt/babylon-gateway-api-sdk";
 
@@ -23,26 +24,25 @@ const streamApi = new StreamApi();
 
 // Global states
 let accountAddress: string // User account address
-let componentAddress: string  // GumballMachine component address
-let resourceAddress: string // GUM resource address
-// You can use this packageAddress to skip the dashboard publishing step package_tdx_b_1qywqgg8an0xz2dk87dr038sy7zu472mt349kpxe8ljqscaur8z
-// xrdAddress resource_tdx_b_1qzkcyv5dwq3r6kawy6pxpvcythx8rh8ntum6ws62p95s9hhz9x
+let componentAddress: string  // INatty component address
+let resourceAddress: string // INattyNFT resource address
 
 // Instantiate component
 document.getElementById('instantiateComponent')!.onclick = async function () {
+  
   let packageAddress = document.getElementById("packageAddress")!.value;
-  let flavor = document.getElementById("flavor")!.value;
 
   let manifest = new ManifestBuilder()
-    .callFunction(packageAddress, "GumballMachine", "instantiate_gumball_machine", [Decimal("10"), `"${flavor}"`])
+    .callFunction(packageAddress, "INatty", "instantiate_inatty", [Decimal("10")])
     .build()
     .toString();
+  
   console.log("Instantiate Manifest: ", manifest)
   // Send manifest to extension for signing
   const result = await walletSdk
     .sendTransaction({
       transactionManifest: manifest,
-      version: 1,
+      version: 1
     })
 
   if (result.isErr()) throw result.error
@@ -55,9 +55,10 @@ document.getElementById('instantiateComponent')!.onclick = async function () {
       intent_hash_hex: result.value.transactionIntentHash
     }
   });
+
   console.log('Instantiate TransactionApi Response', response)
 
-  // fetch component address from gateway api and set componentAddress variable 
+  // Fetch component address from gateway api and set componentAddress variable 
   let commitReceipt = await transactionApi.transactionCommittedDetails({
     transactionCommittedDetailsRequest: {
       transaction_identifier: {
@@ -66,15 +67,15 @@ document.getElementById('instantiateComponent')!.onclick = async function () {
       }
     }
   })
+
   console.log('Instantiate Committed Details Receipt', commitReceipt)
 
-  // fetch component address from gateway api and set componentAddress variable 
   // componentAddress = commitReceipt.details.receipt.state_updates.new_global_entities[0].global_address <- long way -- shorter way below ->
   componentAddress = commitReceipt.details.referenced_global_entities[0]
   document.getElementById('componentAddress').innerText = componentAddress;
 
   resourceAddress = commitReceipt.details.referenced_global_entities[1]
-  document.getElementById('gumAddress').innerText = resourceAddress;
+  document.getElementById('iNattyNFTaddress').innerText = resourceAddress;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////
@@ -88,21 +89,20 @@ document.getElementById('randomToken')!.innerText = randomToken;
 document.getElementById('fetchAccountAddress')!.onclick = async function () {
   
   // Retrieve extension user account addresses
-  console.log('getting account info')
 
   // go to inaturalist API and get the user's info
   let inaturalistUser = document.getElementById("inaturalistUser")!.value;
   let userDetails = await fetch(`https://api.inaturalist.org/v1/users/${inaturalistUser}`)
   // if its not a 200 response, throw an error
   if (!userDetails.ok) {
-
     // display error message on frontend
     document.getElementById('accountAddress')!.innerText = "iNaturalist user does not exist"
-
     throw new Error("iNaturalist user does not exist")
+
   } else {
     userDetails = await userDetails.json()
     console.log("iNaturalist User Details: ", userDetails)
+    
     const result = await walletSdk.request(
       // the number passed as arg is the max number of addresses you wish to fetch
       requestBuilder(requestItem.oneTimeAccounts.withoutProofOfOwnership(1))

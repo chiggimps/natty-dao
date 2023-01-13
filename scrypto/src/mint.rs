@@ -2,13 +2,13 @@ use scrypto::prelude::*;
 
 #[derive(NonFungibleData)]
 pub struct ObservationData {
-    pub id: String,
-    pub date: String,
-    pub location: String,
-    pub user: String,
-    pub image_url: String,
-    pub species: String,
-    pub description: String
+    pub id: String, // Unique ID for the observation
+    pub date: String, // YYYY-MM-DD
+    pub location: String, // GPS coordinates
+    pub user: String, // Name of user who created this observation
+    pub image_url: String, // URL to image
+    pub species: String, // Name of species
+    pub description: String // Description of observation
 }
 
 blueprint! {
@@ -31,7 +31,7 @@ blueprint! {
                 .initial_supply(1);
 
             let nft_resource_address = ResourceBuilder::new_non_fungible()
-                .metadata("name", "INatty Nature Experience")
+                .metadata("name", "INatty Nature Experience NFT")
                 .mintable(rule!(require(admin_badge.resource_address())), LOCKED)
                 .burnable(rule!(require(admin_badge.resource_address())), LOCKED)
                 .updateable_non_fungible_data(rule!(require(admin_badge.resource_address())), LOCKED)
