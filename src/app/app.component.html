@@ -305,7 +305,8 @@
 <!-- Toolbar -->
 <div class="toolbar" role="banner">
   <mat-toolbar color="primary">
-    <span>iNatty NFTs</span>
+    <span>iNatty NFTs Registration</span>
+    <radix-connect-button></radix-connect-button>
   </mat-toolbar>
 </div>
 
@@ -316,54 +317,73 @@
 
     <p>
       <input type="text" placeholder="Scrypto Package Address" id="packageAddress" />
-      <button id="instantiateComponent">Instantiate</button>
+      <br><br>
+      <button mat-raised-button id="instantiateComponent">Instantiate</button>
+      <!-- https://material.angular.io/components/button/overview -->
       <br>----------------------------------------------------------------------------------<br>
     </p>
   
-    <h1>iNatty NFTs</h1>
-  
     <h2>1. Get an <a href="https://inaturalist.org">iNaturalist.org</a> Mobile App and Make an Account</h2>
     <p>Get iNaturalist account / mobile app and create an observations (e.g. take a picture of a house plant or a dog).</p>
-  
+    
+    <br>
+
     <h2>2. Copy This Token</h2>
     <div class="container">
-      <pre id="randomToken"></pre>
+      <!-- Make it a copy to clipboard field with id="randomToken"-->
+      <input type="text" id="randomToken">
+      <!-- <br>
+      <button mat-raised-button id="copyToken">Copy</button> -->
     </div>
   
-    <h2>2. Add Underscore and Token to your iNaturalist Username (e.g. chiggimps_[token])</h2>
+    <h2>3. Add Underscore and Token to your iNaturalist Username (e.g. chiggimps_[token])</h2>
     <p>For Authentication. On iNaturalist, go to Settings (upper right corner) >> Username</p>
+
+    <br>
   
-    <h2>3. Enter iNaturalist User Name (e.g. chiggimps_kgtph0)</h2>
+    <h2>4. Enter iNaturalist User Name (e.g. chiggimps_kgtph021)</h2>
     <p>Wait a couple minutes before connecting wallet so the new username is registered</p>
-    <input type="text" placeholder="iNaturalist User ID" id="inaturalistUser" />
-  
-    <h2>4. Connect Radix Mobile Wallet</h2>
-    <p>Choose a persona to associate w/ iNaturalist data (which includes geo-locations)</p>
-    <p><button id="fetchAccountAddress">Connect Wallet</button></p>
-    <!-- <div class="container">
-      <p>Account Address:
-      <pre id="accountAddress"></pre>
-      </p>
-    </div> -->
-  
-    <h2>5. Associate Wallet to iNaturalist ID</h2>
-    <p><button id="instantiateComponent">Associate</button></p>
-  
-    <h2>6. Select Observations to Mint as NFTs</h2>
-    <p><button id="loadObservations">Load Observations</button></p>
-    <div class="container">
-      <p>Images:</p>
+    <br>
+    <form class="example-form" autocomplete="off">
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="iNaturalist User ID" value="" id="inaturalistUser">
+      </mat-form-field>
+      <!-- submit button that calls onUserSubmit() -->
+    </form>
+    <button mat-raised-button id="inaturalistUserSubmitted" (click)="onUserSubmit()">Submit</button>
+
+    <br>
+
+    <h2>5. Select Observations to Mint as NFTs</h2>
+    <div class="container" id="userObservations">
+      <!-- List the observations image url that in the app.component.ts appData.observations as image cards -->
+      <!-- <li *ngFor="let observation of appData.observations">
+        <img src="{{observation.photo_url}}" alt="observation image" width="200" height="200">
+      </li> -->
     </div>
   
-    <h2>7. Mint</h2>
-    <p><button id="mintNFTs">Mint as NFTs</button></p>
-    <!-- <div class="container">
-      <p>Receipt:<br>
-      <pre id="receipt"></pre>
-      </p>
+    <!-- <h2>5. Associate Radix Mobile Wallet</h2>
+    <p>Choose a persona to associate w/ iNaturalist data (which includes geo-locations)</p>
+    <br>
+    <p><button mat-raised-button id="fetchAccountAddress">Fetch Wallet</button></p>
+    <br>
+    <div class="container">
+      Account Address:<pre id="accountAddress"></pre>
     </div> -->
+
+    <br>
   
-    <h2>8. Go Back Out in Nature.</h2>
+    <h2>6. Associate Wallet to iNaturalist ID</h2>
+    <p><button mat-raised-button id="instantiateComponent">Associate</button></p>
+
+    <br>
+  
+    <h2>8. Mint</h2>
+    <p><button mat-raised-button id="mintNFTs">Mint as NFTs</button></p>
+
+    <br>
+  
+    <h2>9. Go Back Out in Nature 🐢</h2>
   </div>
 
 
