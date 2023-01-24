@@ -316,11 +316,10 @@
   <div class="container">
 
     <p>
-      <input type="text" placeholder="Scrypto Package Address" id="packageAddress" />
+      <!-- <input type="text" placeholder="Scrypto Package Address" id="packageAddress" />
       <br><br>
       <button mat-raised-button id="instantiateComponent">Instantiate</button>
-      <!-- https://material.angular.io/components/button/overview -->
-      <br>----------------------------------------------------------------------------------<br>
+      https://material.angular.io/components/button/overview -->
     </p>
   
     <h2>1. Get an <a href="https://inaturalist.org">iNaturalist.org</a> Mobile App and Make an Account</h2>
@@ -350,28 +349,25 @@
       </mat-form-field>
       <!-- submit button that calls onUserSubmit() -->
     </form>
-    <button mat-raised-button id="inaturalistUserSubmitted" (click)="onUserSubmit()">Submit</button>
+    <button mat-raised-button id="inaturalistUserSubmitted" (click)="onUserSubmit()">See Observations</button>
 
-    <br>
-
-    <h2>5. Select Observations to Mint as NFTs</h2>
-    <div class="container" id="userObservations">
-      <!-- List the observations image url that in the app.component.ts appData.observations as image cards -->
-      <mat-card class="example-card" *ngFor="let observation of appData.observationsParsed">
-        <!-- Create a Material Raised Card for the photo and its traits photoURL, species, description, observed -->
-            <mat-card-header>
-              <mat-card-title>{{observation.species_guess}}</mat-card-title>
-              <mat-card-subtitle> Whoa</mat-card-subtitle>
-            </mat-card-header>
-            <img mat-card-image src="{{observation.photoURL}}" alt="Photo of {{observation.species_guess}}">
-            <mat-card-content>
-              <p>Observed: {{observation.observed_on}}</p>
-            </mat-card-content>
-            <mat-card-actions>
-              <!-- Select check button -->
-              <button mat-button>SELECT</button>
-            </mat-card-actions>
-      </mat-card>
+    <div class="container-flex" fxLayout="row wrap">
+      <div class="card-container" *ngFor="let observation of appData.observationsParsed">
+          <mat-card class="example-card">
+              <img mat-card-image [src]="observation.photoURL" [alt]="'Photo of ' + observation.species_guess">
+              <mat-card-footer>
+                <mat-card-title> {{observation.species_guess}}</mat-card-title>
+                <!-- <mat-card-subtitle>Whoa Subtitle</mat-card-subtitle> -->
+              </mat-card-footer>
+              <mat-card-content>
+                  <p>Observed: {{observation.observed_on}}</p>
+              </mat-card-content>
+              <mat-card-actions>
+                  <button mat-button>SELECT FOR MINT</button>
+              </mat-card-actions>
+          </mat-card>
+      </div>
+  </div>
   
     <!-- <h2>5. Associate Radix Mobile Wallet</h2>
     <p>Choose a persona to associate w/ iNaturalist data (which includes geo-locations)</p>
@@ -384,13 +380,13 @@
 
     <br>
   
-    <h2>6. Associate Wallet to iNaturalist ID</h2>
+    <h2>5. Associate Wallet to iNaturalist ID</h2>
     <p><button mat-raised-button id="instantiateComponent">Associate</button></p>
 
     <br>
   
-    <h2>8. Mint</h2>
-    <p><button mat-raised-button id="mintNFTs">Mint as NFTs</button></p>
+    <h2>6. Mint</h2>
+    <p><button mat-raised-button id="mintNFTs">Mint Selected as NFTs</button></p>
 
     <br>
   

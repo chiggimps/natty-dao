@@ -13,6 +13,17 @@ mat-toolbar {
 }
 
 .example-card {
-    max-width: 300px;
+    max-width: 250px;
     margin: 4px
+}
+
+.container-flex {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.card-container {
+    flex: 1 1 25%;
+    min-width: 250px;
+    margin: 10px;
 }
