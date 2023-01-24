@@ -1,7 +1,8 @@
 /* @import '~@angular/material/prebuilt-themes/indigo-pink.css'; */
 /* @import '~@angular/material/prebuilt-themes/pink-bluegrey.css'; */
-/* @import '~@angular/material/prebuilt-themes/deeppurple-amber.css'; */
-@import '~@angular/material/prebuilt-themes/purple-green.css';
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+/* @import '~@angular/material/prebuilt-themes/purple-green.css'; */
+
 
 /* Added this to stick the toolbar to top */
 mat-toolbar {
@@ -9,4 +10,9 @@ mat-toolbar {
     position: fixed;
     z-index: 100;
     width: 100%  !important;
+}
+
+.example-card {
+    max-width: 300px;
+    margin: 4px
 }

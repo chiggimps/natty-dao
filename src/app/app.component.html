@@ -357,10 +357,21 @@
     <h2>5. Select Observations to Mint as NFTs</h2>
     <div class="container" id="userObservations">
       <!-- List the observations image url that in the app.component.ts appData.observations as image cards -->
-      <!-- <li *ngFor="let observation of appData.observations">
-        <img src="{{observation.photo_url}}" alt="observation image" width="200" height="200">
-      </li> -->
-    </div>
+      <mat-card class="example-card" *ngFor="let observation of appData.observationsParsed">
+        <!-- Create a Material Raised Card for the photo and its traits photoURL, species, description, observed -->
+            <mat-card-header>
+              <mat-card-title>{{observation.species_guess}}</mat-card-title>
+              <mat-card-subtitle> Whoa</mat-card-subtitle>
+            </mat-card-header>
+            <img mat-card-image src="{{observation.photoURL}}" alt="Photo of {{observation.species_guess}}">
+            <mat-card-content>
+              <p>Observed: {{observation.observed_on}}</p>
+            </mat-card-content>
+            <mat-card-actions>
+              <!-- Select check button -->
+              <button mat-button>SELECT</button>
+            </mat-card-actions>
+      </mat-card>
   
     <!-- <h2>5. Associate Radix Mobile Wallet</h2>
     <p>Choose a persona to associate w/ iNaturalist data (which includes geo-locations)</p>

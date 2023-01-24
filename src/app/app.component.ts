@@ -5,13 +5,15 @@ import { Component, OnInit } from '@angular/core';
 type AppData = {
   randomToken: string
   verified_user: boolean,
-  observations: any[]
+  observations: any[],
+  observationsParsed: any[]
 }
 // create an object to store the app data
 const appData: AppData = {
   randomToken: "",
   verified_user: false,
-  observations: []
+  observations: [],
+  observationsParsed: []
 }
 
 @Component({
@@ -22,6 +24,7 @@ const appData: AppData = {
 
 export class AppComponent implements OnInit {
   title = 'angular-starter';
+  appData = appData;
 
   // connectButton!: ReturnType<typeof configure>;
 
@@ -36,18 +39,20 @@ export class AppComponent implements OnInit {
   }
 
   onUserSubmit = async function () {
+    let TEST = true
+    let TESTUSER = "chiggimps_stbc3twz"
     // first validate whether the token matches the one generated
     let inaturalistUser = document.getElementById("inaturalistUser") as HTMLInputElement;
-    let userString = inaturalistUser.value;
+    let userString = inaturalistUser.value || TESTUSER;
     let userSplit = userString.split("_");
     if (userSplit.length > 1) {
       // token is the last item
       let token = userSplit[userSplit.length - 1];
       console.log("token: ", token)
       // check if the token matches the one generated
-      if (token == appData.randomToken) {
+      if (token == appData.randomToken || TEST) {
         // if it does, then call the iNaturalist API to get the user's details
-        await this.getUserInfo();
+        await this.getUserInfo(inaturalistUser.value);
       } else {
         window.alert('Token in username does not match');
       }
@@ -59,11 +64,7 @@ export class AppComponent implements OnInit {
   }
 
   // Function that calls into the iNaturalist API to verify if the user added the token to their username
-  getUserInfo = async function () {
-    // go to inaturalist API and get the user's info
-    let inaturalistUser = document.getElementById("inaturalistUser") as HTMLInputElement;
-    // get the value of the input field
-    let userString = inaturalistUser.value;
+  getUserInfo = async function (userString: string) {
     console.log("inaturalistUser: ", userString)
     let userDetails = await fetch(`https://api.inaturalist.org/v1/users/${userString}`)
     // if its not a 200 response, throw an error
@@ -104,33 +105,44 @@ export class AppComponent implements OnInit {
       console.log("appData.observations: ", appData.observations);
       // each has an observation_photos array, which has a photo object
       // get the photo.url field and display it in a <img> tag on the frontend in the <div id="userObservations"></div> tag
-      let userObservationsHTML = "";
+      // let userObservationsHTML = "";
       for (let i = 0; i < appData.observations.length; i++) {
         let observation = appData.observations[i];
         if (observation.photos.length == 0) {
           continue;
         }
         let photoURL = observation.photos[0].url;
-        console.log("photoURL: ", photoURL)
+        
+        // get the high quality photo
+        photoURL = photoURL.replace("square", "large");
 
-        // make them cards with horizontal spacing
-        // HACK: this is not the way to do it, i need to bind the data to the HTML template and work from there
-        userObservationsHTML += `<div class="card">`;
-        userObservationsHTML += `<img src="${photoURL}" class="card-img-top" alt="...">`;
-        userObservationsHTML += `<div class="card-body">`;
-        userObservationsHTML += `<h5 class="card-title">${observation.species_guess}</h5>`;
-        userObservationsHTML += `<p class="card-text">${observation.description}</p>`;
-        userObservationsHTML += `<p class="card-text"><small class="text-muted">${observation.observed_on}</small></p>`;
-        userObservationsHTML += `</div>`;
-        userObservationsHTML += `</div>`;
+        appData.observationsParsed.push({
+          photoURL: photoURL || "https://via.placeholder.com/150",
+          species_guess: observation.species_guess || "Unknown Species",
+          description: observation.description || "No description",
+          observed_on: observation.observed_on || "Unknown Date"
+        })
       }
-      
-      userObservationsHTML = `<div class="row row-cols-1 row-cols-md-3 g-4">${userObservationsHTML}</div>`;
+      console.log("appData.observationsParsed: ", appData.observationsParsed);
 
-      console.log("userObservationsHTML: ", userObservationsHTML)
+      //   // make them cards with horizontal spacing
+      //   // HACK: this is not the way to do it, i need to bind the data to the HTML template and work from there
+      //   userObservationsHTML += `<div class="card">`;
+      //   userObservationsHTML += `<img src="${photoURL}" class="card-img-top" alt="...">`;
+      //   userObservationsHTML += `<div class="card-body">`;
+      //   userObservationsHTML += `<h5 class="card-title">${observation.species_guess}</h5>`;
+      //   userObservationsHTML += `<p class="card-text">${observation.description}</p>`;
+      //   userObservationsHTML += `<p class="card-text"><small class="text-muted">${observation.observed_on}</small></p>`;
+      //   userObservationsHTML += `</div>`;
+      //   userObservationsHTML += `</div>`;
+      // }
       
-      let userObservationsElement = document.getElementById("userObservations") as HTMLDivElement;
-      userObservationsElement.innerHTML = userObservationsHTML;
+      // userObservationsHTML = `<div class="row row-cols-1 row-cols-md-3 g-4">${userObservationsHTML}</div>`;
+
+      // console.log("userObservationsHTML: ", userObservationsHTML)
+      
+      // let userObservationsElement = document.getElementById("userObservations") as HTMLDivElement;
+      // userObservationsElement.innerHTML = userObservationsHTML;
     }
   }
 
