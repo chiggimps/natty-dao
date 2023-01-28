@@ -3,6 +3,11 @@
 It should connect and check for your iNatty NFTs on the wallet, 
 and only load ones you don't have yet.
 
+## Deploy application
+
+1. `npm run build`
+2. `pulumi up`
+
 ------
 
 This example is meant to guide you through building, deploying and using the INatty dApp using the [Betanet Wallet SDK](https://github.com/radixdlt/wallet-sdk#readme).
