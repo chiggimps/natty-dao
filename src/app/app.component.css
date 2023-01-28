@@ -3,7 +3,6 @@
 @import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
 /* @import '~@angular/material/prebuilt-themes/purple-green.css'; */
 
-
 /* Added this to stick the toolbar to top */
 mat-toolbar {
     height: 64px;
@@ -26,4 +25,19 @@ mat-toolbar {
     flex: 1 1 25%;
     min-width: 250px;
     margin: 10px;
+}
+
+.footer {
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+    padding: 16px;
+    text-align: left;
+}
+
+.social-media a {
+    margin-right: 16px;
+}
+
+.attribution {
+    margin-top: 16px;
 }

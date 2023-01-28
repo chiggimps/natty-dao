@@ -1,10 +1,7 @@
 ## Deploying Components and Starting Application
 
-Based off: https://github.com/radixdlt/scrypto-examples/tree/main/full-stack/wallet-sdk-gumball-machine
-
-npm install -S react react-dom @material-ui/core
-
-https://dev.to/alekseiberezkin/setting-up-react-typescript-app-without-create-react-app-oph
+It should connect and check for your iNatty NFTs on the wallet, 
+and only load ones you don't have yet.
 
 ------
 
