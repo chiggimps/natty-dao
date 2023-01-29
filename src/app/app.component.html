@@ -1,29 +1,32 @@
 <!-- Toolbar -->
 <div class="toolbar" role="banner">
   <mat-toolbar color="primary">
-    <span>iNatty NFTs</span>
-    <!-- Put a button on the right side of this banner -->
-    <span class="flexExpand">
-      <radix-connect-button />
-    </span>
-    
+    <mat-toolbar-row>
+         <div >
+            <span>iNatty NFTs 🦤</span>
+         </div>
+         <nav class="mainnav">
+          <a mat-button routerLink="/">About</a> |
+          <a mat-button routerLink="/register">Register</a> |
+          <a mat-button routerLink="/mint">Mint</a> |
+          <a mat-button routerLink="/trade">Trade</a>
+        </nav>
+         <span class="flexExpand"></span>
+         <div >
+           <radix-connect-button></radix-connect-button>
+         </div>
+        </mat-toolbar-row>
   </mat-toolbar>
 </div>
+
+<br><br><br><br>
 
 <div class="content" role="main">
 
   <!-- Content -->
   <div class="container">
-
-    <br><br>
-    <br><br>
-    <nav>
-      <!-- make size bigger -->
-      <a mat-button routerLink="/">Home</a> |
-      <a mat-button routerLink="/register">Register</a> |
-      <a mat-button routerLink="/mint">Mint</a>
-    </nav>
-
+    
+    <br>
     <app-register></app-register>
     <app-mint></app-mint> 
     <router-outlet></router-outlet>
