@@ -24,6 +24,8 @@ export class MintComponent implements OnInit {
   title = 'angular-starter';
   appData = appData;
 
+  selectedObservations: any[] = [];
+
   connectButton!: ReturnType<typeof configure>;
 
   ngOnInit(): void {
@@ -113,6 +115,17 @@ export class MintComponent implements OnInit {
       }
       console.log("appData.observationsParsed: ", appData.observationsParsed);
 
+    }
+  }
+
+  onSelectionChange(observation: any) {
+    if (observation.selected) {
+      this.selectedObservations.push(observation);
+      console.log("selectedObservations: ", this.selectedObservations)
+    } else {
+      this.selectedObservations = this.selectedObservations.filter(
+        (selectedObservation) => selectedObservation !== observation
+      );
     }
   }
 

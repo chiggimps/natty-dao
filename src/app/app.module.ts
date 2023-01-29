@@ -14,6 +14,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { RouterModule, Routes } from '@angular/router';
 
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { FormsModule } from '@angular/forms';
+
 const routes: Routes = [
   { path: 'mint', component: MintComponent },
   { path: 'register', component: RegisterComponent },
@@ -26,6 +29,8 @@ const routes: Routes = [
     RegisterComponent
   ],
   imports: [
+    MatCheckboxModule,
+    FormsModule,
     BrowserModule,
     MatFormFieldModule,
     MatInputModule,

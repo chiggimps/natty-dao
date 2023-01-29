@@ -1,5 +1,5 @@
 <div>
-  <h2>1. Select Observations</h2>
+  <h2>Select Nature Experiences to Mint</h2>
 
   <button
     mat-raised-button
@@ -28,7 +28,8 @@
           <p>Observed: {{ observation.observed_on }}</p>
         </mat-card-content>
         <mat-card-actions>
-          <button mat-button>SELECT FOR MINT</button>
+          <!-- <button mat-button>SELECT</button> -->
+          <mat-checkbox  [(ngModel)]="observation.selected" (ngModelChange)="onSelectionChange(observation)">Select</mat-checkbox>
         </mat-card-actions>
       </mat-card>
     </div>
