@@ -7,23 +7,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
 
-import { AppComponent } from './app.component';
-import { MintComponent } from './mint/mint.component';
-import { RegisterComponent } from './register/register.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
-import { RouterModule, Routes } from '@angular/router';
-
-const routes: Routes = [
-  { path: 'mint', component: MintComponent },
-  { path: 'register', component: RegisterComponent },
-];
 
 @NgModule({
   declarations: [
-    AppComponent,
-    MintComponent,
-    RegisterComponent
   ],
   imports: [
     BrowserModule,
@@ -32,11 +19,10 @@ const routes: Routes = [
     MatButtonModule,
     MatToolbarModule,
     MatCardModule,
-    BrowserAnimationsModule,
-    RouterModule.forRoot(routes)
+    BrowserAnimationsModule
   ],
   providers: [],
-  bootstrap: [AppComponent],
+  bootstrap: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class AppModule { }
+export class RegisterModule { }
