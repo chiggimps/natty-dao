@@ -1,6 +1,6 @@
-/* @import '~@angular/material/prebuilt-themes/indigo-pink.css'; */
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
 /* @import '~@angular/material/prebuilt-themes/pink-bluegrey.css'; */
-@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+/* @import '~@angular/material/prebuilt-themes/deeppurple-amber.css'; */
 /* @import '~@angular/material/prebuilt-themes/purple-green.css'; */
 
 /* Added this to stick the toolbar to top */
@@ -24,27 +24,11 @@ mat-toolbar {
     align-content: stretch;
 } */
 
-.example-card {
-    max-width: 250px;
-    margin: 4px
-}
-
 .container {
     display: flex;
     flex-direction: column;
     height: 100%;
     padding: 0 16px;
-}
-
-.container-flex {
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.card-container {
-    flex: 1 1 25%;
-    min-width: 250px;
-    margin: 10px;
 }
 
 .footer {

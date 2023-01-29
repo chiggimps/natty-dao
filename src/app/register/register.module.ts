@@ -6,6 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
+import { ClipboardModule } from '@angular/cdk/clipboard';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -13,6 +14,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   declarations: [
   ],
   imports: [
+    ClipboardModule,
     BrowserModule,
     MatFormFieldModule,
     MatInputModule,

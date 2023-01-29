@@ -1,39 +1,70 @@
+<div>
+  <h2>1. Select Observations</h2>
 
-<h2>1. Select Observations</h2>
+  <button
+    mat-raised-button
+    id="getUserObservations"
+    (click)="getUserObservations()"
+  >
+    See Observations
+  </button>
 
-<button mat-raised-button id="inaturalistUserSubmitted" (click)="onUserSubmit()">See Observations</button>
-
-<div class="container-flex" fxLayout="row wrap">
-  <div class="card-container" *ngFor="let observation of appData.observationsParsed">
+  <div class="container-flex">
+    <div
+      class="card-container"
+      *ngFor="let observation of appData.observationsParsed"
+    >
       <mat-card class="example-card">
-          <img mat-card-image [src]="observation.photoURL" [alt]="'Photo of ' + observation.species_guess">
-          <mat-card-footer>
-            <mat-card-title> {{observation.species_guess}}</mat-card-title>
-            <!-- <mat-card-subtitle>Whoa Subtitle</mat-card-subtitle> -->
-          </mat-card-footer>
-          <mat-card-content>
-              <p>Observed: {{observation.observed_on}}</p>
-          </mat-card-content>
-          <mat-card-actions>
-              <button mat-button>SELECT FOR MINT</button>
-          </mat-card-actions>
+        <img
+          mat-card-image
+          [src]="observation.photoURL"
+          [alt]="'Photo of ' + observation.species_guess"
+        />
+        <mat-card-footer>
+          <mat-card-title> {{ observation.species_guess }}</mat-card-title>
+          <!-- <mat-card-subtitle>Whoa Subtitle</mat-card-subtitle> -->
+        </mat-card-footer>
+        <mat-card-content>
+          <p>Observed: {{ observation.observed_on }}</p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button>SELECT FOR MINT</button>
+        </mat-card-actions>
       </mat-card>
+    </div>
   </div>
-</div>
 
-<!-- Footer -->
-<br>
-<mat-footer class="footer" role="contentinfo">
-  <div class="social-media"  style="display: flex; justify-content: left; align-items: left;">
-    <a href="https://www.twitter.com/NattyRadishes" target="_blank">
-      <img src="https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/twitter.svg" alt="Twitter Logo" height="32" width="32">
-    </a>
-    <a href="https://www.t.me/NattyRadishes" target="_blank">
-      <img src="https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/telegram.svg" alt="Telegram Logo" height="32" width="32">
-    </a>
-  </div>
-  <div class="attribution" style="display: flex; justify-content: center; align-items: left;">
-    <span>Made by&nbsp;</span>
-    <a href="https://www.twitter.com/chiggimps" target="_blank"> chiggimps</a>
-  </div>
-</mat-footer>
+  <!-- Footer -->
+  <br />
+  <mat-footer class="footer" role="contentinfo">
+    <div
+      class="social-media"
+      style="display: flex; justify-content: left; align-items: left"
+    >
+      <a href="https://www.twitter.com/NattyRadishes" target="_blank">
+        <img
+          src="https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/twitter.svg"
+          alt="Twitter Logo"
+          height="32"
+          width="32"
+        />
+      </a>
+      &nbsp;
+      <a href="https://www.t.me/NattyRadishes" target="_blank">
+        <img
+          src="https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/telegram.svg"
+          alt="Telegram Logo"
+          height="32"
+          width="32"
+        />
+      </a>
+    </div>
+    <div
+      class="attribution"
+      style="display: flex; justify-content: center; align-items: left"
+    >
+      <span>Made by&nbsp;</span>
+      <a href="https://www.twitter.com/chiggimps" target="_blank"> chiggimps</a>
+    </div>
+  </mat-footer>
+</div>
