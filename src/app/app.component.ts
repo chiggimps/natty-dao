@@ -1,5 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { configure, getMethods } from '@radixdlt/connect-button';
+import {
+  RadixDappToolkit,
+  ManifestBuilder,
+  Decimal,
+  Bucket,
+  Expression,
+  ResourceAddress
+} from '@radixdlt/radix-dapp-toolkit'
+// See: https://github.com/radixdlt/scrypto-examples/tree/main/full-stack/dapp-toolkit-gumball-machine
 
 // create a type for the appData object
 type AppData = {
@@ -26,41 +34,30 @@ export class AppComponent implements OnInit {
   title = 'angular-starter';
   appData = appData;
 
-  connectButton!: ReturnType<typeof configure>;
-
   ngOnInit(): void {
 
-    // create the connect button
-    this.connectButton = configure({
-      dAppId: 'dashboard',
-      networkId: 34,
-      logLevel: 'DEBUG',
-      onConnect: ({ setState, getWalletData }) => {
-        getWalletData({
-          oneTimeAccountsWithoutProofOfOwnership: {},
-        }).map(({ oneTimeAccounts }) => {
-          setState({ connected: true });
-          return oneTimeAccounts[0].address;
-        }).andThen(sendTx)
+    const rdt = RadixDappToolkit(
+      {
+        dAppDefinitionAddress: 'account_tdx_b_1ppf80pmrpc6yh6gwyrudhct7h883uzvwp5704jrgep8qgrj6we',
+        dAppName: 'Test Dapp',
       },
-      onDisconnect: ({ setState }) => {
-        setState({ connected: false });
+      (requestData) => {
+        requestData({
+          accounts: { quantifier: 'atLeast', quantity: 1 },
+        }).map(({ data: { accounts } }) => {
+          // set your application state
+        })
       },
-      onCancel() {
-        console.log('Cancel Clicked');
-      },
-      onDestroy() {
-        console.log('Button Destroyed');
-      },
-    });
-
-    const sendTx = (address: string) =>
-      getMethods().sendTransaction({
-        version: 1,
-        transactionManifest: `
-          CREATE_RESOURCE Enum("Fungible", 18u8) Map<String, String>("description", "Dedo test token", "name", "Dedo", "symbol", "DEDO") Map<Enum, Tuple>() Some(Enum("Fungible", Decimal("15000")));
-          CALL_METHOD ComponentAddress("${address}") "deposit_batch" Expression("ENTIRE_WORKTOP");`,
-      });
+      {
+        networkId: 11,
+        onDisconnect: () => {
+          // clear your application state
+        },
+        onInit: ({ accounts }) => {
+          // set your initial application state
+        },
+      }
+    )
 
   }
 
